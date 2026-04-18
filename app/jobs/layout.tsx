@@ -30,8 +30,6 @@ export default function Layout({ children }: Props) {
 
   return (
     <div className="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
-
-      {/* 🔥 Sticky Glass Tabs */}
       <div className="sticky top-14 z-40 backdrop-blur-xl bg-white/70 border-b border-gray-200 shadow-sm">
         
         <div className="w-full overflow-x-auto no-scrollbar">
@@ -52,8 +50,6 @@ export default function Layout({ children }: Props) {
                     }`}
                   >
                     {tab.title}
-
-                    {/* Glow */}
                     {active && (
                       <span className="absolute inset-0 rounded-full bg-blue-500/20 blur-lg -z-10"></span>
                     )}
