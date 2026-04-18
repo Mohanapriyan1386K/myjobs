@@ -1,17 +1,25 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import JobSkeleton from "../Component/JobSkeleton";
 
 export default function JobsPage() {
   const [jobs, setJobs] = useState<any[]>([]);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const fetchJobs = () => {
+    setLoading(true);
+
     fetch(`/api/jobs?search=${search}&page=${page}`)
       .then((res) => res.json())
-      .then((data) => setJobs(data.data))
-      .catch((err) => console.log(err));
+      .then((data) => {
+        setJobs(data.data);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false));
   };
 
   useEffect(() => {
@@ -21,8 +29,6 @@ export default function JobsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 md:px-10 py-6">
-    
-
       {/* 🔍 Search */}
       <div className="max-w-xl mx-auto mb-8">
         <input
@@ -39,26 +45,23 @@ export default function JobsPage() {
 
       {/* 📋 Job Cards */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {jobs.map((job) => (
-          <div
-            key={job.id}
-            className="bg-white rounded-2xl shadow-md p-5 transition hover:shadow-xl hover:-translate-y-1"
-          >
-            <h2 className="text-lg font-semibold">{job.title}</h2>
+        {loading
+          ? Array.from({ length: 6 }).map((_, i) => <JobSkeleton key={i} />)
+          : jobs.map((job) => (
+              <div
+                key={job.id}
+                className="bg-white rounded-2xl shadow-md p-5 hover:shadow-xl transition"
+              >
+                <h2 className="text-lg font-semibold">{job.title}</h2>
+                <p className="text-gray-600">{job.company}</p>
+                <p className="text-gray-500 text-sm">📍 {job.location}</p>
+                <p className="text-blue-600 font-semibold">{job.salary}</p>
 
-            <p className="text-gray-600 mt-1">{job.company}</p>
-
-            <p className="text-gray-500 text-sm">📍 {job.location}</p>
-
-            <p className="text-blue-600 font-semibold mt-2">
-              {job.salary}
-            </p>
-
-            <button className="mt-4 w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700 transition">
-              Apply Now
-            </button>
-          </div>
-        ))}
+                <button className="mt-4 w-full bg-blue-600 text-white py-2 rounded-xl">
+                  Apply Now
+                </button>
+              </div>
+            ))}
       </div>
 
       {/* 📄 Pagination */}
