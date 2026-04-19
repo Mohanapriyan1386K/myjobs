@@ -2,18 +2,20 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname,useRouter } from "next/navigation";
 
 const navLinks = [
-  { name: "about", href: "/" },
+  { name: "About", href: "/" },
   { name: "Find Jobs", href: "/jobs" },
   { name: "Companies", href: "/companies" },
-  { name: "Post Job", href: "/post-job" },
+  // { name: "Post Job", href: "/post-job" },
 ];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+
+  const router=useRouter()
 
   return (
     <nav className="bg-slate-900 text-white shadow-md sticky top-0 z-50">
@@ -48,11 +50,11 @@ export default function Navbar() {
 
           {/* Right Side */}
           <div className="hidden md:flex items-center gap-4">
-            <button className="border border-gray-400 px-4 py-1 rounded hover:bg-gray-800">
+            <button className="border border-gray-400 px-4 py-1 rounded hover:bg-gray-800"
+               onClick={()=>router.push("/auth")}
+            
+            >
               Login
-            </button>
-            <button className="bg-blue-500 px-4 py-1 rounded hover:bg-blue-600">
-              Signup
             </button>
           </div>
 
@@ -83,12 +85,14 @@ export default function Navbar() {
             );
           })}
 
-          <button className="w-full mt-3 border border-gray-400 py-2 rounded">
+          <button className="w-full mt-3 border border-gray-400 py-2 rounded"
+             onClick={()=>router.push("/auth")}
+          >
             Login
           </button>
-          <button className="w-full mt-2 bg-blue-500 py-2 rounded">
+          {/* <button className="w-full mt-2 bg-blue-500 py-2 rounded">
             Signup
-          </button>
+          </button> */}
         </div>
       )}
     </nav>
