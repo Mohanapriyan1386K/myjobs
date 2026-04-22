@@ -16,7 +16,7 @@ export default function Navbar() {
   const [dropdown, setDropdown] = useState(false);
 
   const pathname = usePathname();
-  const { data: session } = useSession();
+  const { data: session }:any = useSession();
   const router = useRouter();
 
   return (
